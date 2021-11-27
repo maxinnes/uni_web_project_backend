@@ -1,6 +1,7 @@
 <?php
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserDoesNotExistException.php';
 
 class Account{
     // Account props
@@ -36,10 +37,11 @@ class Account{
         $connection = new DatabaseConnection();
         $result = $connection->getOneRecordByAttribute(Account::TABLE,"Email",$email);
         if($result==NULL){
-            throw new Exception("User with this email does not exist.");
+            throw new UserDoesNotExistException();
+        }else{
+            $dbId = $result["AccountId"];
+            return new Account($dbId);
         }
-        $dbId = $result["AccountId"];
-        return new Account($dbId);
     }
 
     public function verifyPassword($password): bool{

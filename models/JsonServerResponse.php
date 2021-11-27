@@ -6,7 +6,7 @@ class JsonServerResponse{
     public const MESSAGE_FAIL = 0;
     public const MESSAGE_SUCCESSFUL = 1;
 
-    public static function createJsonResponse($messageType,$message,$result){
+    public static function createJsonResponse($messageType,$message,$result = array()){
         $jsonResponse = array("message"=>$message,"result"=>$result);
         switch ($messageType){
             case 0:
