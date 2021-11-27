@@ -37,6 +37,7 @@ class Account{
 
         $salt = openssl_random_pseudo_bytes(16);
         $hash = hash_pbkdf2("sha256", $password, $salt, 1000, 20);
+        $salt = base64_encode($salt);
 
         $attributesAndValues = array(
             "First Name"=>$firstName,
