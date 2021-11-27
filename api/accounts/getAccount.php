@@ -10,7 +10,8 @@ $userAccount = new Account($id);
 
 $userDetails = array(
     "firstName" => $userAccount->getFirstName(),
-    "lastName" => $userAccount->getLastName()
+    "lastName" => $userAccount->getLastName(),
+    "email" => $userAccount->getEmail()
 );
 
 echo json_encode($userDetails);

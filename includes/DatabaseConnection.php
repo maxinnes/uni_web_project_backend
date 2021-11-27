@@ -22,6 +22,14 @@ class DatabaseConnection{
         $statement->execute();
         return $statement->fetch();
     }
+
+    public function getOneRecordByAttribute($table,$attributeName,$attributeValue){
+        $sql = "SELECT * FROM `$table` WHERE `$attributeName` = '$attributeValue'";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetch();
+    }
+
     public function createNewRecord($table,$attributesAndValues): bool { // TODO Make sure to error handle this
         $query = "INSERT INTO `$table` (";
         foreach(array_keys($attributesAndValues) as $array_key){

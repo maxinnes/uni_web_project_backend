@@ -32,6 +32,23 @@ class Account{
         $this->passwordLastChanged = $dbUser["Password Last Changed"];
     }
 
+    public static function getAccountViaEmail($email): Account{
+        $connection = new DatabaseConnection();
+        $result = $connection->getOneRecordByAttribute(Account::TABLE,"Email",$email);
+        $dbId = $result["AccountId"];
+        return new Account($dbId);
+    }
+
+    public function verifyPassword($password): bool{
+        $salt = base64_decode($this->salt);
+        $hash = hash_pbkdf2("sha256",$password,$salt,1000,20);
+        if($hash==$this->password){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public static function createNewAccount($firstName,$lastName,$email,$password){
         $connection = new DatabaseConnection();
 
@@ -55,5 +72,10 @@ class Account{
 
     public function getLastName(){
         return $this->lastName;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 }
