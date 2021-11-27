@@ -16,7 +16,8 @@ class DatabaseConnection{
             //echo "Connection failed: " . $e->getMessage();
         }
     }
-    public function getOneRecordById($table,$recordId){ // TODO Make sure to error handle this
+
+    public function getOneRecordById($table, $recordId){ // TODO Make sure to error handle this
         $sql = "SELECT * FROM `$table` WHERE `AccountId` = $recordId;";
         $statement = $this->connection->prepare($sql);
         $statement->execute();

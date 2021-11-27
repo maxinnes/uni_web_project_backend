@@ -35,6 +35,9 @@ class Account{
     public static function getAccountViaEmail($email): Account{
         $connection = new DatabaseConnection();
         $result = $connection->getOneRecordByAttribute(Account::TABLE,"Email",$email);
+        if($result==NULL){
+            throw new Exception("User with this email does not exist.");
+        }
         $dbId = $result["AccountId"];
         return new Account($dbId);
     }

@@ -19,5 +19,3 @@ if($account->verifyPassword($password)){
 }else{
     echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Did not log in","did not log in");
 }
-
-
