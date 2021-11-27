@@ -22,6 +22,10 @@ class Account{
         $connection = new DatabaseConnection();
         $dbUser = $connection->getOneRecordById($this::TABLE,$idParse);
 
+        if($dbUser==NULL){
+            throw new UserDoesNotExistException();
+        }
+
         $this->id = $dbUser["AccountId"];
         $this->created = $dbUser["Created"];
         $this->updated = $dbUser["Updated"];
