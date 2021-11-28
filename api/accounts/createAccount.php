@@ -1,6 +1,7 @@
 <?php
 // Imports
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Account.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/models/JsonServerResponse.php';
 
 // Header
 header('Content-type: application/json');
@@ -15,4 +16,10 @@ $email = $data["email"];
 $password = $data["password"];
 
 // Create account
-Account::createNewAccount($firstName,$lastName,$email,$password);
+try {
+    $newUserAccount = Account::createNewAccount($firstName, $lastName, $email, $password);
+    $returnId = array("Account Id"=>$newUserAccount->id);
+    echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Account successfully created.",$returnId);
+} catch(UserAlreadyExistsException $e){
+    echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,$e->getMessage());
+}

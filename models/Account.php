@@ -2,6 +2,7 @@
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserDoesNotExistException.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserAlreadyExistsException.php';
 
 class Account{
     // Account props
@@ -72,7 +73,12 @@ class Account{
             "Password"=>$hash,
             "Salt"=>$salt
         );
-        $connection->createNewRecord(Account::TABLE,$attributesAndValues);
+        try {
+            $connection->createNewRecord(Account::TABLE, $attributesAndValues);
+            return Account::getAccountViaEmail($email);
+        } catch(PDOException $e){
+            throw new UserAlreadyExistsException("User with this email already exists.");
+        }
     }
 
     public function getFirstName(){

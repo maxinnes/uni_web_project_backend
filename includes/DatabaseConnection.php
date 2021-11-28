@@ -31,7 +31,7 @@ class DatabaseConnection{
         return $statement->fetch();
     }
 
-    public function createNewRecord($table,$attributesAndValues): bool { // TODO Make sure to error handle this
+    public function createNewRecord($table,$attributesAndValues) { // TODO Make sure to error handle this
         $query = "INSERT INTO `$table` (";
         foreach(array_keys($attributesAndValues) as $array_key){
             $query = $query."`".$array_key."`,";
@@ -45,6 +45,7 @@ class DatabaseConnection{
         $statement = $this->connection->prepare($query);
         $statement->execute();
 
-        return true; // TODO If successful, should return the ID of the new record
+        //return true; // TODO If successful, should return the ID of the new record
+        //return $statement->fetch();
     }
 }
