@@ -9,10 +9,10 @@ class JsonServerResponse{
     public static function createJsonResponse($messageType,$message,$result = array()){
         $jsonResponse = array("message"=>$message,"result"=>$result);
         switch ($messageType){
-            case 0:
+            case self::MESSAGE_FAIL:
                 $jsonResponse["messageType"] = "ERROR";
                 break;
-            case 1:
+            case self::MESSAGE_SUCCESSFUL:
                 $jsonResponse["messageType"] = "SUCCESS";
                 break;
         }
