@@ -15,6 +15,8 @@ $password = $data["password"];
 try {
     $account = Account::getAccountViaEmail($email);
     if($account->verifyPassword($password)){
+        session_start();
+        $_SESSION['accountObject'] = $account;
         echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Logged in","Logged in");
     }else{
         echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Did not log in","did not log in");
