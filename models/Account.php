@@ -61,7 +61,7 @@ class Account{
 
     public static function createNewAccount($firstName,$lastName,$email,$password){
         $connection = new DatabaseConnection();
-
+        // TODO Need to change password algorithm to password_verify
         $salt = openssl_random_pseudo_bytes(16);
         $hash = hash_pbkdf2("sha256", $password, $salt, 1000, 20);
         $salt = base64_encode($salt);
