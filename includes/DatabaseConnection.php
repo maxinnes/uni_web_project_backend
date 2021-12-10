@@ -9,6 +9,8 @@ class DatabaseConnection{
     public function __construct(){
         try {
             $conn = new PDO("mysql:host=$this->servername;dbname=mercator", $this->username, $this->password);
+            $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
+            $conn->setAttribute(PDO::ATTR_PERSISTENT,true);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->connection = $conn;
         }

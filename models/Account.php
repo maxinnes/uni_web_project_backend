@@ -1,6 +1,7 @@
 <?php
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
+//include_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserDoesNotExistException.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserAlreadyExistsException.php';
 

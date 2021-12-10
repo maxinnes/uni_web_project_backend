@@ -15,8 +15,24 @@ $password = $data["password"];
 try {
     $account = Account::getAccountViaEmail($email);
     if($account->verifyPassword($password)){
-        $_SESSION['accountObject'] = $account;
-        echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Logged in","Logged in");
+        if(session_status()==PHP_SESSION_ACTIVE){
+            $sessionDetails = array(
+                "sessionStatus"=> session_status(),
+                "sessionId"=> session_id(),
+                "sessionAccountId"=>$_SESSION['sessionAccountId']
+            );
+            echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Session already exists",$sessionDetails);
+        }else{
+            session_start();
+            $_SESSION['accountObject'] = $account;
+            $_SESSION['isLoggedIn'] = true; // TODO Record session IP as well
+            $sessionDetails = array(
+                "sessionStatus"=> session_status(),
+                "sessionId"=> session_id(),
+                "sessionAccountId"=>$account->id
+            );
+        }
+        echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Logged in",$sessionDetails);
     }else{
         echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Did not log in","did not log in");
     }
