@@ -1,11 +1,11 @@
 <?php
-// Should make the connection outside this script, Because everytime a new db connection is called, it reconnects
+// TODO Should make the connection outside this script, Because everytime a new db connection is called, it reconnects
 class DatabaseConnection{
     private $servername = "localhost";
     private $username = "root";
     private $password = "";
     private $connection;
-
+    // TODO Need a update record method
     public function __construct(){
         try {
             $conn = new PDO("mysql:host=$this->servername;dbname=mercator", $this->username, $this->password);
