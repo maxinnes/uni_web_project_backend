@@ -2,6 +2,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
 //include_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
+//require_once $_SERVER['DOCUMENT_ROOT'].'/includes/InitDbConnection.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserDoesNotExistException.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserAlreadyExistsException.php';
 
@@ -76,10 +77,33 @@ class Account{
         );
         try {
             $connection->createNewRecord(Account::TABLE, $attributesAndValues);
-            return Account::getAccountViaEmail($email);
+            $newAccount = Account::getAccountViaEmail($email);
+            Account::createEmailValidationRecord($newAccount->id,$email);
+            return $newAccount;
         } catch(PDOException $e){
             throw new UserAlreadyExistsException("User with this email already exists.");
         }
+    }
+
+    public static function createEmailValidationRecord($accountId,$email){
+        $connection = new DatabaseConnection();
+        $currentDate = new DateTime();
+        $currentToString = $currentDate->format(DateTimeInterface::ATOM);
+        $newVerificationCode = sha1("$currentToString-$accountId");
+        $emailValidationNewRecord = array(
+            "AccountId"=>$accountId,
+            "IsVerified"=>0,
+            "VerificationCode"=>$newVerificationCode
+        );
+        $connection->createNewRecord("EmailValidation",$emailValidationNewRecord);
+        $emailMessage = "Hello,\r\ Here is you email verification link: http://localhost/#/verify/$newVerificationCode";
+        mail($email,"Mercator email code",$emailMessage);
+    }
+
+    public static function isEmailVerified($verificationCode){
+        $connection = new DatabaseConnection();
+        $test1 = $connection->getOneRecordByAttribute("EmailValidation","VerificationCode",$verificationCode);
+        return $test1;
     }
 
     public function getFirstName(){

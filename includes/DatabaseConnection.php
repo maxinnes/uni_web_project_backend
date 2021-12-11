@@ -1,7 +1,7 @@
 <?php
-
+// Should make the connection outside this script, Because everytime a new db connection is called, it reconnects
 class DatabaseConnection{
-    public $servername = "localhost";
+    private $servername = "localhost";
     private $username = "root";
     private $password = "";
     private $connection;

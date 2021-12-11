@@ -13,12 +13,12 @@ $data = json_decode(file_get_contents('php://input'), true);
 $firstName = $data["firstName"];
 $lastName = $data["lastName"];
 $email = $data["email"];
-$password = $data["password"];
+$password = $data["password"]; // TODO Sanitise input
 
 // Create account
 try {
     $newUserAccount = Account::createNewAccount($firstName, $lastName, $email, $password);
-    $returnId = array("Account Id"=>$newUserAccount->id);
+    $returnId = array("accountId"=>$newUserAccount->id);
     echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Account successfully created.",$returnId);
 } catch(UserAlreadyExistsException $e){
     echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,$e->getMessage());
