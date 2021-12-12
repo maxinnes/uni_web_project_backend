@@ -1,6 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/models/EmailVerification.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserDoesNotExistException.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Exceptions/UserAlreadyExistsException.php';
 
@@ -17,11 +18,12 @@ class Account{
     private $passwordLastChanged;
 
     // DB details
+    private const TABLE_PRIMARY_KEY = "AccountId";
     private const TABLE = "Accounts";
 
     public function __construct($idParse){
         $connection = new DatabaseConnection();
-        $dbUser = $connection->getOneRecordById($this::TABLE,$idParse);
+        $dbUser = $connection->getOneRecordById($this::TABLE,$this::TABLE_PRIMARY_KEY,$idParse);
 
         if($dbUser==NULL){
             throw new UserDoesNotExistException();
@@ -73,10 +75,12 @@ class Account{
             "Password"=>$hash,
             "Salt"=>$salt
         );
+
         try {
-            $connection->createNewRecord(Account::TABLE, $attributesAndValues);
-            $newAccount = Account::getAccountViaEmail($email);
-            EmailVerification::createEmailValidationRecord($newAccount->id,$email);
+            $newAccountId = $connection->createNewRecord(Account::TABLE, $attributesAndValues);
+            $newAccount = new Account($newAccountId);
+            $newEmailValidationRecord = EmailVerification::createEmailValidationRecord($newAccount->id);
+            $newEmailValidationRecord->sendValidationEmail($email);
             return $newAccount;
         } catch(PDOException $e){
             throw new UserAlreadyExistsException("User with this email already exists.");

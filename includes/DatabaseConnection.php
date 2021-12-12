@@ -19,8 +19,8 @@ class DatabaseConnection{
         }
     }
 
-    public function getOneRecordById($table, $recordId){ // TODO Make sure to error handle this
-        $sql = "SELECT * FROM `$table` WHERE `AccountId` = $recordId;";
+    public function getOneRecordById($table,$recordPrimaryKeyName, $recordId){ // TODO Make sure to error handle this
+        $sql = "SELECT * FROM `$table` WHERE `$recordPrimaryKeyName` = $recordId;";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
         return $statement->fetch();
@@ -46,8 +46,16 @@ class DatabaseConnection{
 
         $statement = $this->connection->prepare($query);
         $statement->execute();
+        return $this->connection->lastInsertId();
+    }
+    public function updateRecord($table,$recordPrimaryKeyName,$recordPrimaryKeyValue,$attributesAndValues){
+        $query = "UPDATE `$table` SET";
+        foreach($attributesAndValues as $attribute=>$value){
+            $query = $query." `$attribute` = '$value',";
+        }
+        $query = rtrim($query,",")." WHERE `$table`.`$recordPrimaryKeyName` = $recordPrimaryKeyValue;";
 
-        //return true; // TODO If successful, should return the ID of the new record
-        //return $statement->fetch();
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
     }
 }
