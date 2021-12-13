@@ -13,8 +13,8 @@ class Account{
     private $firstName;
     private $lastName;
     private $email;
-    private $password;
-    private $salt;
+    private $hash;
+    //private $salt;
     private $passwordLastChanged;
 
     // DB details
@@ -35,8 +35,8 @@ class Account{
         $this->firstName = $dbUser["First Name"];
         $this->lastName = $dbUser["Last Name"];
         $this->email = $dbUser["Email"];
-        $this->password = $dbUser["Password"];
-        $this->salt = $dbUser["Salt"];
+        $this->hash = $dbUser["Hash"];
+        //$this->salt = $dbUser["Salt"];
         $this->passwordLastChanged = $dbUser["Password Last Changed"];
     }
 
@@ -52,28 +52,18 @@ class Account{
     }
 
     public function verifyPassword($password): bool{
-        $salt = base64_decode($this->salt);
-        $hash = hash_pbkdf2("sha256",$password,$salt,1000,20);
-        if($hash==$this->password){
-            return true;
-        }else{
-            return false;
-        }
+        return password_verify($password,$this->hash);
     }
 
     public static function createNewAccount($firstName,$lastName,$email,$password){
         $connection = new DatabaseConnection();
-        // TODO Need to change password algorithm to password_verify
-        $salt = openssl_random_pseudo_bytes(16);
-        $hash = hash_pbkdf2("sha256", $password, $salt, 1000, 20);
-        $salt = base64_encode($salt);
+        $hash = password_hash($password,PASSWORD_DEFAULT);
 
         $attributesAndValues = array(
             "First Name"=>$firstName,
             "Last Name"=>$lastName,
             "Email"=>$email,
-            "Password"=>$hash,
-            "Salt"=>$salt
+            "Hash"=>$hash
         );
 
         try {
@@ -83,7 +73,7 @@ class Account{
             $newEmailValidationRecord->sendValidationEmail($email);
             return $newAccount;
         } catch(PDOException $e){
-            throw new UserAlreadyExistsException("User with this email already exists.");
+            throw new UserAlreadyExistsException($e->getMessage());
         }
     }
 
