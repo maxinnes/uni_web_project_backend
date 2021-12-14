@@ -4,6 +4,7 @@ include_once $_SERVER["DOCUMENT_ROOT"].'/models/Account.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/JsonServerResponse.php';
 // Headers
 header('Content-type: application/json');
+session_start();
 
 $id = $_GET["id"];
 try {
