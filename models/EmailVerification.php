@@ -32,6 +32,13 @@ class EmailVerification{
         return new EmailVerification($id);
     }
 
+    public static function getNewEmailVerificationByAccountId($accountId){
+        $connection = new DatabaseConnection();
+        $verificationRecord = $connection->getOneRecordByAttribute(EmailVerification::TABLE,"AccountId",$accountId);
+        $id = $verificationRecord[EmailVerification::TABLE_PRIMARY_KEY];
+        return new EmailVerification($id);
+    }
+
     public function sendValidationEmail($email){
         $emailMessage = "Hello,\r Here is you email verification link: http://localhost/verify/$this->verificationCode \rThanks";
         mail($email,"Mercator email code",$emailMessage);
