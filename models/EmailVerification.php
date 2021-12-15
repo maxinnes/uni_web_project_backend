@@ -27,9 +27,13 @@ class EmailVerification{
 
     public static function getNewEmailVerificationByCode($verificationCode){
         $connection = new DatabaseConnection();
-        $verificationRecord = $connection->getOneRecordByAttribute(EmailVerification::TABLE,"VerificationCode",$verificationCode);
-        $id = $verificationRecord[EmailVerification::TABLE_PRIMARY_KEY];
-        return new EmailVerification($id);
+        try {
+            $verificationRecord = $connection->getOneRecordByAttribute(EmailVerification::TABLE, "VerificationCode", $verificationCode);
+            $id = $verificationRecord[EmailVerification::TABLE_PRIMARY_KEY];
+            return new EmailVerification($id);
+        } catch(PDOException $e){
+            throw new EmailValidationException("Verification code does not exist");
+        }
     }
 
     public static function getNewEmailVerificationByAccountId($accountId){
