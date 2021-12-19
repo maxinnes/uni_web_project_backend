@@ -36,7 +36,6 @@ class Account{
         $this->lastName = $dbUser["Last Name"];
         $this->email = $dbUser["Email"];
         $this->hash = $dbUser["Hash"];
-        //$this->salt = $dbUser["Salt"];
         $this->passwordLastChanged = $dbUser["Password Last Changed"];
     }
 

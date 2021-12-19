@@ -58,4 +58,9 @@ class DatabaseConnection{
         $statement = $this->connection->prepare($query);
         $statement->execute();
     }
+    public function runCustomGetQuery($query){
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 }

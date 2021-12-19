@@ -29,7 +29,7 @@ try {
             echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Session already exists",$sessionDetails);
         }else {
             if($emailVerificationRecord->isEmailVerified()) {
-                $_SESSION['accountObject'] = $account;
+                $_SESSION['accountId'] = $account->id;
                 $_SESSION['isLoggedIn'] = true; // TODO Record session IP as well
                 echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL, "Logged in.");
             }else{
