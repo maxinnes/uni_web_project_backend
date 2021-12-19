@@ -24,7 +24,7 @@ try {
         if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true){
             $sessionDetails = array(
                 "sessionId"=> session_id(),
-                "sessionAccountId"=>$_SESSION['accountObject']->id
+                "sessionAccountId"=>$_SESSION['accountId']
             );
             echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Session already exists",$sessionDetails);
         }else {
