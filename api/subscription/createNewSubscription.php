@@ -1,6 +1,7 @@
 <?php
 // Imports
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/Subscriptions.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/models/AccountAddresses.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/models/JsonServerResponse.php';
 
 // Header
@@ -14,6 +15,7 @@ if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true) {
 
     // Get json contents
     $subscriptionChoice = $data["subscriptionChoice"];
+    $addressDetails = $data["addressDetails"];
     $price = null;
 
     switch ($subscriptionChoice) {
@@ -22,9 +24,17 @@ if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true) {
             break;
         case "2":
             $price = 5;
+            if($addressDetails===null){
+                echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"No Address Provided.");
+                exit();
+            }
             break;
         case "3":
             $price = 25;
+            if($addressDetails===null){
+                echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"No Address provided.");
+                exit();
+            }
             break;
     }
 
@@ -33,6 +43,9 @@ if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true) {
     }else{
         try {
             $newSubscription = Subscriptions::createNewSubscription($_SESSION['accountId'], $price, $subscriptionChoice);
+            if($addressDetails!==null){
+                $newAddress = AccountAddresses::createNewAddress($_SESSION['accountId'],$addressDetails["addressLineOne"],$addressDetails["addressLineTwo"],$addressDetails["addressLineThree"],$addressDetails["city"],$addressDetails["county"],$addressDetails["postcode"]);
+            }
             echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL, "Subscription Created");
         } catch(UserHasSubscriptionException $e){
             echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,$e->getMessage());
