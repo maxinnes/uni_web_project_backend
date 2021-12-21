@@ -68,5 +68,20 @@ class Subscriptions{
             throw new UserHasSubscriptionException("User has a subscription");
         }
     }
-
+    public static function getSubscriptionByAccountId($id){
+        $connection = new DatabaseConnection();
+        $dbRecord = $connection->getOneRecordByAttribute(Subscriptions::TABLE,"AccountId",$id);
+        return new Subscriptions($dbRecord["SubscriptionId"]);
+    }
+    public function returnAsAssocArray(){
+        return array(
+            "subscriptionId"=>$this->id,
+            "started"=>$this->started,
+            "accountId"=>$this->accountId,
+            "price"=>$this->price,
+            "subscriptionChoice"=>$this->subscriptionChoice,
+            "subscriptionEnd"=>$this->subscriptionEnd,
+            "nextPaymentDate"=>$this->nextPaymentDate
+        );
+    }
 }

@@ -25,6 +25,8 @@ if($password==$verifyPassword){
         $newUserAccount = Account::createNewAccount($firstName, $lastName, $email, $password);
         $returnId = array("accountId" => $newUserAccount->id);
         echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL, "Account successfully created.", $returnId);
+        $_SESSION['accountId'] = $newUserAccount->id;
+        $_SESSION['isLoggedIn'] = true;
     } catch (UserAlreadyExistsException $e) {
         echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL, $e->getMessage());
     }
