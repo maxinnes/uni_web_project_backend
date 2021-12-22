@@ -33,6 +33,13 @@ class DatabaseConnection{
         return $statement->fetch();
     }
 
+    public function getMultipleRecordsByAttribute($table,$attributeName,$attributeValue){
+        $sql = "SELECT * FROM `$table` WHERE `$attributeName` = '$attributeValue'";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
     public function createNewRecord($table,$attributesAndValues) { // TODO Make sure to error handle this
         $query = "INSERT INTO `$table` (";
         foreach(array_keys($attributesAndValues) as $array_key){
