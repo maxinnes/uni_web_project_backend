@@ -3,7 +3,6 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
 
 class Stores{
-
     public $id;
     private $storeName;
     private $created;
