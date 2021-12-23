@@ -10,16 +10,18 @@ error_reporting(E_ALL ^ E_NOTICE);
 // Catch json data
 $data = json_decode(file_get_contents('php://input'), true);
 
+$storeId = $data["storeId"];
 $storeName = $data["storeName"];
-$storeUrl = $data["url"];
+$url = $data["url"];
 
 if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true){
-    try {
-        $newStore = Stores::createNewStore($storeName, $_SESSION['accountId'], $storeUrl);
-        echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL, "Created new store.", $newStore->returnAsAssocArray());
-    } catch (Exception $e){
+    try{
+        $storeObj = new Stores($storeId);
+        $storeObj = $storeObj->updateStore($storeName,$url);
+        echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Updated store",$storeObj->returnAsAssocArray());
+    }catch(Exception $e){
         echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,$e->getMessage());
     }
 }else{
-    echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"User not logged in.");
+    echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"User is not logged in.");
 }

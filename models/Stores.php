@@ -51,6 +51,17 @@ class Stores{
         }
         return $returnArray;
     }
+    public function updateStore($storeName,$url){
+        $connection = new DatabaseConnection();
+
+        $attributesAndValues = array(
+            "StoreName"=>$storeName,
+            "Url"=>$url
+        );
+
+        $connection->updateRecord($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id,$attributesAndValues);
+        return new Stores($this->id);
+    }
     public function deleteStore(){
         $connection = new DatabaseConnection();
         $connection->deleteRecordById($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id);
