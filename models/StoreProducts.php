@@ -53,6 +53,19 @@ class StoreProducts{
 
         return $returnArray;
     }
+    public function updateProduct($name,$description,$image,$price){
+        $connection = new DatabaseConnection();
+
+        $attributesAndValues = array(
+            "Name"=>$name,
+            "Description"=>$description,
+            "image"=>$image,
+            "Price"=>$price
+        );
+
+        $connection->updateRecord($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id,$attributesAndValues);
+        return new StoreProducts($this->id);
+    }
     public function returnAsAssocArray(){
         return array(
             "productId"=>$this->id,
