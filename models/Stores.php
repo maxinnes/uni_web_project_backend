@@ -7,6 +7,7 @@ class Stores{
     private $storeName;
     private $created;
     private $accountId;
+    private $url;
 
     private const TABLE_PRIMARY_KEY = "StoreId";
     private const TABLE = "Stores";
@@ -23,6 +24,7 @@ class Stores{
         $this->storeName = $dbRecord["StoreName"];
         $this->created = $dbRecord["Created"];
         $this->accountId = $dbRecord["AccountId"];
+        $this->url = $dbRecord["Url"];
     }
 
     public static function createNewStore($storeName,$accountId){
@@ -48,12 +50,17 @@ class Stores{
         }
         return $returnArray;
     }
+    public function deleteStore(){
+        $connection = new DatabaseConnection();
+        $connection->deleteRecordById($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id);
+    }
     public function returnAsAssocArray(){
         return array(
             "storeId"=>$this->id,
             "storeName"=>$this->storeName,
             "created"=>$this->created,
-            "accountId"=>$this->accountId
+            "accountId"=>$this->accountId,
+            "url"=>$this->url
         );
     }
 }
