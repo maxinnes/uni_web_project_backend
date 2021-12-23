@@ -66,6 +66,10 @@ class StoreProducts{
         $connection->updateRecord($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id,$attributesAndValues);
         return new StoreProducts($this->id);
     }
+    public function deleteProduct(){
+        $connection = new DatabaseConnection();
+        $connection->deleteRecordById($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id);
+    }
     public function returnAsAssocArray(){
         return array(
             "productId"=>$this->id,

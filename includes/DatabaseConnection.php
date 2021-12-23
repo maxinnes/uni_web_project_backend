@@ -65,6 +65,11 @@ class DatabaseConnection{
         $statement = $this->connection->prepare($query);
         $statement->execute();
     }
+    public function deleteRecordById($table,$recordPrimaryKeyName,$recordPrimaryKeyValue){
+        $query = "DELETE FROM `$table` WHERE `$table`.`$recordPrimaryKeyName` = $recordPrimaryKeyValue";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+    }
     public function runCustomGetQuery($query){
         $statement = $this->connection->prepare($query);
         $statement->execute();
