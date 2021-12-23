@@ -27,12 +27,13 @@ class Stores{
         $this->url = $dbRecord["Url"];
     }
 
-    public static function createNewStore($storeName,$accountId){
+    public static function createNewStore($storeName,$accountId,$url){
         $connection = new DatabaseConnection();
 
         $attributesAndValues =  array(
             "StoreName"=>$storeName,
-            "AccountId"=>$accountId
+            "AccountId"=>$accountId,
+            "Url"=>$url
         );
 
         $newRecordId = $connection->createNewRecord(Stores::TABLE,$attributesAndValues);
