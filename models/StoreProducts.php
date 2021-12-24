@@ -59,8 +59,17 @@ class StoreProducts{
         $attributesAndValues = array(
             "Name"=>$name,
             "Description"=>$description,
-            "image"=>$image,
             "Price"=>$price
+        );
+
+        $connection->updateRecord($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id,$attributesAndValues);
+        return new StoreProducts($this->id);
+    }
+    public function addProductImage($image){
+        $connection = new DatabaseConnection();
+
+        $attributesAndValues = array(
+            "Image"=>$image
         );
 
         $connection->updateRecord($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id,$attributesAndValues);

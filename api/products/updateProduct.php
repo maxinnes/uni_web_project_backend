@@ -25,7 +25,7 @@ if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true){
         $storeArray = $storeObj->returnAsAssocArray();
         if($storeArray["accountId"]===$_SESSION['accountId']){
             $productObj = new StoreProducts($productId);
-            $newProductObj = $productObj->updateProduct($name,$description,$image,$price);
+            $newProductObj = $productObj->updateProduct($name,$description,$price);
             echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL,"Successfully updated new product",$newProductObj->returnAsAssocArray());
         }else{
             echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"User tried to access store which does not belong to them.");

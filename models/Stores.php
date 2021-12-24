@@ -66,6 +66,11 @@ class Stores{
         $connection = new DatabaseConnection();
         $connection->deleteRecordById($this::TABLE,$this::TABLE_PRIMARY_KEY,$this->id);
     }
+    public static function getStoreByUrl($url){
+        $connection = new DatabaseConnection();
+        $dbRecord = $connection->getOneRecordByAttribute(Stores::TABLE,"Url",$url);
+        return new Stores($dbRecord["StoreId"]);
+    }
     public function returnAsAssocArray(){
         return array(
             "storeId"=>$this->id,
