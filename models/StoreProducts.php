@@ -53,7 +53,7 @@ class StoreProducts{
 
         return $returnArray;
     }
-    public function updateProduct($name,$description,$image,$price){
+    public function updateProduct($name,$description,$price){
         $connection = new DatabaseConnection();
 
         $attributesAndValues = array(

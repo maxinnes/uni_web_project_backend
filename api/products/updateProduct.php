@@ -16,7 +16,6 @@ $storeId = $data["storeId"];
 $productId = $data["productId"];
 $name = $data["name"];
 $description = $data["description"];
-$image = $data["image"];
 $price = $data["price"];
 
 if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']==true){
