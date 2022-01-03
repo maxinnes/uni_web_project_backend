@@ -34,6 +34,21 @@ class Orders{
 
     }
 
+    public static function createNewOrder($totalPrice,$purchasedProducts,$storeId,$customerEmail){
+        $connection = new DatabaseConnection();
+
+        $attributesAndValues = array(
+            "Total Price"=>$totalPrice,
+            "Purchased Products"=>$purchasedProducts,
+            "Store Id"=>$storeId,
+            "Customer Email"=>$customerEmail,
+            "Status"=>"In Progress"
+        );
+
+        $newRecordId = $connection->createNewRecord(Orders::TABLE,$attributesAndValues);
+        return new Orders($newRecordId);
+    }
+
     public function returnAsAssocArray(){
         return array(
             "orderId"=>$this->id,

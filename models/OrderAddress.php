@@ -51,7 +51,7 @@ class OrderAddress{
 
         try {
             $newRecordId = $connection->createNewRecord(OrderAddress::TABLE, $attributesAndValues);
-            return new AccountAddresses($newRecordId);
+            return new OrderAddress($newRecordId);
         } catch (PDOException $e) {
             throw new Exception("Could not create address record.");
         }
