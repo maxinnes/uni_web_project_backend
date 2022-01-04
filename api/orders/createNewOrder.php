@@ -41,7 +41,7 @@ try{
         $newPurchasedProduct["total"] = $totalPrice;
         $newPurchasedProducts[] = $newPurchasedProduct;
     }
-    $newPurchasedProducts = json_encode($newPurchasedProducts);
+//    $newPurchasedProducts = json_encode($newPurchasedProducts);
     // Create new order
     $newOrderObj = Orders::createNewOrder($orderTotalPrice,$newPurchasedProducts,$storeObj->id,$customerEmail);
 

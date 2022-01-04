@@ -1,6 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/includes/DatabaseConnection.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/models/Stores.php';
 
 class Orders{
     // Order props
@@ -39,14 +40,32 @@ class Orders{
 
         $attributesAndValues = array(
             "Total Price"=>$totalPrice,
-            "Purchased Products"=>$purchasedProducts,
+            "Purchased Products"=>json_encode($purchasedProducts),
             "Store Id"=>$storeId,
             "Customer Email"=>$customerEmail,
             "Status"=>"In Progress"
         );
 
         $newRecordId = $connection->createNewRecord(Orders::TABLE,$attributesAndValues);
+        self::sendEmailReceipt($customerEmail,$storeId,$totalPrice,$purchasedProducts);
         return new Orders($newRecordId);
+    }
+
+    public static function sendEmailReceipt($email,$storeId,$orderTotal,$orderPurchasedProducts){
+        $storeObj = new Stores($storeId);
+        $storeObjArr = $storeObj->returnAsAssocArray();
+        $storeName = $storeObjArr["storeName"];
+
+        $messageContents = "Thank for your order from $storeName, \n";
+        foreach($orderPurchasedProducts as $orderPurchasedProduct){
+            $productName = $orderPurchasedProduct["name"];
+            $productQuantity = $orderPurchasedProduct["quantity"];
+            $productTotal = $orderPurchasedProduct["total"];
+            $messageContents = $messageContents."\n$productName x $productQuantity: £$productTotal";
+        }
+        $messageContents = $messageContents."\n\nTotal: £$orderTotal";
+
+        mail($email,"Your order from: $storeName",$messageContents);
     }
 
     public static function getAllOrdersByStoreId($id){
