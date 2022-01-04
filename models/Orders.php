@@ -49,6 +49,16 @@ class Orders{
         return new Orders($newRecordId);
     }
 
+    public static function getAllOrdersByStoreId($id){
+        $connection = new DatabaseConnection();
+        $dbRecords = $connection->getMultipleRecordsByAttribute(Orders::TABLE,"Store Id",$id);
+        $returnArray = array();
+        foreach($dbRecords as $dbRecord){
+            $returnArray[] = new Orders($dbRecord[Orders::TABLE_PRIMARY_KEY]);
+        }
+        return $returnArray;
+    }
+
     public function returnAsAssocArray(){
         return array(
             "orderId"=>$this->id,
