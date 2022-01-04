@@ -61,8 +61,8 @@ class OrderAddress{
     public static function getOrderAddressByOrderId($id){
         $connection = new DatabaseConnection();
         try {
-            $dbRecord = $connection->getOneRecordByAttribute(OrderAddress::TABLE, "AccountId", $id);
-            return new AccountAddresses($dbRecord["AddressId"]);
+            $dbRecord = $connection->getOneRecordByAttribute(OrderAddress::TABLE, "OrderId", $id);
+            return new OrderAddress($dbRecord["AddressId"]);
         } catch (PDOException $e) {
             return null;
         }
