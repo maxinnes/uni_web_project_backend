@@ -1,9 +1,9 @@
 <?php
 // TODO Should make the connection outside this script, Because everytime a new db connection is called, it reconnects
 class DatabaseConnection{
-    private $servername = "localhost";
-    private $username = "root";
-    private $password = "";
+    private $servername = "80.82.113.174";
+    private $username = "user1";
+    private $password = "Simple_123";
     private $connection;
     // TODO Need a update record method
     public function __construct(){
