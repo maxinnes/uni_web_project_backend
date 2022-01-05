@@ -1,11 +1,11 @@
 <?php
-// TODO Should make the connection outside this script, Because everytime a new db connection is called, it reconnects
+
 class DatabaseConnection{
     private $servername = "80.82.113.174";
     private $username = "user1";
     private $password = "Simple_123";
     private $connection;
-    // TODO Need a update record method
+
     public function __construct(){
         try {
             $conn = new PDO("mysql:host=$this->servername;dbname=mercator", $this->username, $this->password);
@@ -19,7 +19,7 @@ class DatabaseConnection{
         }
     }
 
-    public function getOneRecordById($table,$recordPrimaryKeyName, $recordId){ // TODO Make sure to error handle this
+    public function getOneRecordById($table,$recordPrimaryKeyName, $recordId){
         $sql = "SELECT * FROM `$table` WHERE `$recordPrimaryKeyName` = $recordId;";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
@@ -40,7 +40,7 @@ class DatabaseConnection{
         return $statement->fetchAll();
     }
 
-    public function createNewRecord($table,$attributesAndValues) { // TODO Make sure to error handle this
+    public function createNewRecord($table,$attributesAndValues) {
         $query = "INSERT INTO `$table` (";
         foreach(array_keys($attributesAndValues) as $array_key){
             $query = $query."`".$array_key."`,";

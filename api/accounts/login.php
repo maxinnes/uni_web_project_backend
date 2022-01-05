@@ -30,7 +30,7 @@ try {
         }else {
             if($emailVerificationRecord->isEmailVerified()) {
                 $_SESSION['accountId'] = $account->id;
-                $_SESSION['isLoggedIn'] = true; // TODO Record session IP as well
+                $_SESSION['isLoggedIn'] = true;
                 echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_SUCCESSFUL, "Logged in.");
             }else{
                 echo JsonServerResponse::createJsonResponse(JsonServerResponse::MESSAGE_FAIL,"Email not verified.");

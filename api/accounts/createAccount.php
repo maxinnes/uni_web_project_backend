@@ -15,7 +15,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $firstName = $data["firstName"];
 $lastName = $data["lastName"];
 $email = $data["email"];
-$password = $data["password"]; // TODO Sanitise input
+$password = $data["password"];
 $verifyPassword = $data["verifyPassword"];
 
 // Check password
