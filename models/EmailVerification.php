@@ -44,7 +44,7 @@ class EmailVerification{
     }
 
     public function sendValidationEmail($email){
-        $emailMessage = "Hello,\r Here is you email verification link: https://maxinn.es/verify/$this->verificationCode \rThanks";
+        $emailMessage = "Hello,\r Here is you email verification link: https://maxinn.es/#/verify/$this->verificationCode \rThanks";
         mail($email,"Mercator email code",$emailMessage);
     }
 
